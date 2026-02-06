@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#00ffcc", "font": {"color": "white"}, "id": "ElitePowerSupplyManager", "label": "ElitePowerSupplyManager", "shape": "dot", "title": "SubManager: ElitePowerSupplyManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "VideoManager", "label": "VideoManager", "shape": "dot", "title": "SubManager: VideoManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "DataServer", "label": "DataServer", "shape": "dot", "title": "SubManager: DataServer"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "ThermalMappingManager", "label": "ThermalMappingManager", "shape": "dot", "title": "SubManager: ThermalMappingManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "StageMotion", "label": "StageMotion", "shape": "dot", "title": "SubManager: StageMotion"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "EmissionManager", "label": "EmissionManager", "shape": "dot", "title": "SubManager: EmissionManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "WaferScanManager", "label": "WaferScanManager", "shape": "dot", "title": "SubManager: WaferScanManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "DroneCameraManager", "label": "DroneCameraManager", "shape": "dot", "title": "SubManager: DroneCameraManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "CADManager", "label": "CADManager", "shape": "dot", "title": "SubManager: CADManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "LiveImageDispatcher", "label": "LiveImageDispatcher", "shape": "dot", "title": "SubManager: LiveImageDispatcher"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "DeviceCommunicationManager", "label": "DeviceCommunicationManager", "shape": "dot", "title": "SubManager: DeviceCommunicationManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "HardwareManager", "label": "HardwareManager", "shape": "dot", "title": "SubManager: HardwareManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "OpticsManager", "label": "OpticsManager", "shape": "dot", "title": "SubManager: OpticsManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "LSMManager", "label": "LSMManager", "shape": "dot", "title": "SubManager: LSMManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "TimetoolManager", "label": "TimetoolManager", "shape": "dot", "title": "SubManager: TimetoolManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "LVIManager", "label": "LVIManager", "shape": "dot", "title": "SubManager: LVIManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "FDxManager", "label": "FDxManager", "shape": "dot", "title": "SubManager: FDxManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "KBoxManager", "label": "KBoxManager", "shape": "dot", "title": "SubManager: KBoxManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "IrisManager", "label": "IrisManager", "shape": "dot", "title": "SubManager: IrisManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "SEMManager", "label": "SEMManager", "shape": "dot", "title": "SubManager: SEMManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "NavCameraManager", "label": "NavCameraManager", "shape": "dot", "title": "SubManager: NavCameraManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "Mosaic", "label": "Mosaic", "shape": "dot", "title": "SubManager: Mosaic"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "SequenceManager", "label": "SequenceManager", "shape": "dot", "title": "SubManager: SequenceManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "ThermalDbxPowerSupplyManager", "label": "ThermalDbxPowerSupplyManager", "shape": "dot", "title": "SubManager: ThermalDbxPowerSupplyManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "EliteHwManager", "label": "EliteHwManager", "shape": "dot", "title": "SubManager: EliteHwManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "TableTilt", "label": "TableTilt", "shape": "dot", "title": "SubManager: TableTilt"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "ThermalControl", "label": "ThermalControl", "shape": "dot", "title": "SubManager: ThermalControl"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "DiagnosticsManager", "label": "DiagnosticsManager", "shape": "dot", "title": "SubManager: DiagnosticsManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "LaserMarkerManager", "label": "LaserMarkerManager", "shape": "dot", "title": "SubManager: LaserMarkerManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "ThermalControlManager", "label": "ThermalControlManager", "shape": "dot", "title": "SubManager: ThermalControlManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "UtilsManager", "label": "UtilsManager", "shape": "dot", "title": "SubManager: UtilsManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "WaferScanAutomationManager", "label": "WaferScanAutomationManager", "shape": "dot", "title": "SubManager: WaferScanAutomationManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "DataAutomationManager", "label": "DataAutomationManager", "shape": "dot", "title": "SubManager: DataAutomationManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "TesterInterfaceManager", "label": "TesterInterfaceManager", "shape": "dot", "title": "SubManager: TesterInterfaceManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "MultiChanPowerSupplyManager", "label": "MultiChanPowerSupplyManager", "shape": "dot", "title": "SubManager: MultiChanPowerSupplyManager"}, {"color": "#00ffcc", "font": {"color": "white"}, "id": "TIUManager", "label": "TIUManager", "shape": "dot", "title": "SubManager: TIUManager"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": "#aaaaaa", "from": "ElitePowerSupplyManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "ElitePowerSupplyManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "ThermalMappingManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "ThermalMappingManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "ThermalMappingManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "StageMotion", "to": "EmissionManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "StageMotion", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "StageMotion", "to": "WaferScanManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "StageMotion", "to": "DroneCameraManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "DataServer", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "CADManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "CADManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "CADManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "CADManager", "to": "LiveImageDispatcher"}, {"arrows": "to", "color": "#aaaaaa", "from": "HardwareManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "LSMManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "LSMManager", "to": "OpticsManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LSMManager", "to": "HardwareManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LSMManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "LSMManager", "to": "TimetoolManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LSMManager", "to": "WaferScanManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LSMManager", "to": "WaferScanManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LSMManager", "to": "LVIManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LSMManager", "to": "FDxManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LSMManager", "to": "KBoxManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "VideoManager", "to": "OpticsManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "VideoManager", "to": "HardwareManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "VideoManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "VideoManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "VideoManager", "to": "LSMManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "VideoManager", "to": "EmissionManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "VideoManager", "to": "IrisManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "VideoManager", "to": "SEMManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "VideoManager", "to": "NavCameraManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "VideoManager", "to": "LiveImageDispatcher"}, {"arrows": "to", "color": "#aaaaaa", "from": "VideoManager", "to": "DroneCameraManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LiveImageDispatcher", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LiveImageDispatcher", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "LiveImageDispatcher", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "LiveImageDispatcher", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "LiveImageDispatcher", "to": "Mosaic"}, {"arrows": "to", "color": "#aaaaaa", "from": "LiveImageDispatcher", "to": "SequenceManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LiveImageDispatcher", "to": "DroneCameraManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "ThermalDbxPowerSupplyManager", "to": "EmissionManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "ThermalDbxPowerSupplyManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "ThermalDbxPowerSupplyManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "IrisManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "IrisManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "IrisManager", "to": "ElitePowerSupplyManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "IrisManager", "to": "ThermalMappingManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "IrisManager", "to": "EliteHwManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "IrisManager", "to": "LiveImageDispatcher"}, {"arrows": "to", "color": "#aaaaaa", "from": "TableTilt", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "TableTilt", "to": "WaferScanManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "TableTilt", "to": "WaferScanManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "TableTilt", "to": "LSMManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "TableTilt", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "KBoxManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "Mosaic", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "Mosaic", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "Mosaic", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "Mosaic", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "Mosaic", "to": "EmissionManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "ThermalControl", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "ThermalControl", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "ThermalControl", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanManager", "to": "LiveImageDispatcher"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanManager", "to": "TableTilt"}, {"arrows": "to", "color": "#aaaaaa", "from": "EmissionManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "EmissionManager", "to": "OpticsManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "EmissionManager", "to": "HardwareManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "EmissionManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "EmissionManager", "to": "SequenceManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "EmissionManager", "to": "FDxManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "SequenceManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "SequenceManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "TimetoolManager", "to": "LSMManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "TimetoolManager", "to": "LVIManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LVIManager", "to": "LSMManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LVIManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LVIManager", "to": "TimetoolManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "DiagnosticsManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "DiagnosticsManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "DiagnosticsManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "DiagnosticsManager", "to": "EmissionManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "DiagnosticsManager", "to": "WaferScanManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "DiagnosticsManager", "to": "DeviceCommunicationManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "FDxManager", "to": "KBoxManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "FDxManager", "to": "EmissionManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "FDxManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "FDxManager", "to": "SequenceManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "FDxManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "LaserMarkerManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "LaserMarkerManager", "to": "HardwareManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "LaserMarkerManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "SEMManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "SEMManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "SEMManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "ThermalControlManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanAutomationManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanAutomationManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanAutomationManager", "to": "WaferScanManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanAutomationManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanAutomationManager", "to": "DataAutomationManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanAutomationManager", "to": "TesterInterfaceManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanAutomationManager", "to": "EmissionManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanAutomationManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "WaferScanAutomationManager", "to": "MultiChanPowerSupplyManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "DataAutomationManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "DataAutomationManager", "to": "EmissionManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "DataAutomationManager", "to": "UtilsManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "DataAutomationManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "DataAutomationManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "DataAutomationManager", "to": "MultiChanPowerSupplyManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "DataAutomationManager", "to": "TesterInterfaceManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "TesterInterfaceManager", "to": "EmissionManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "TesterInterfaceManager", "to": "MultiChanPowerSupplyManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "MultiChanPowerSupplyManager", "to": "EmissionManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "DroneCameraManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "TIUManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "TIUManager", "to": "SEMManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "TIUManager", "to": "SEMManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "TIUManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "TIUManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "TIUManager", "to": "NavCameraManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "TIUManager", "to": "SEMManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "NavCameraManager", "to": "VideoManager"}, {"arrows": "to", "color": "#aaaaaa", "from": "NavCameraManager", "to": "StageMotion"}, {"arrows": "to", "color": "#aaaaaa", "from": "NavCameraManager", "to": "DataServer"}, {"arrows": "to", "color": "#aaaaaa", "from": "NavCameraManager", "to": "SEMManager"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.3,
+            "damping": 0.09,
+            "gravitationalConstant": -80000,
+            "springConstant": 0.001,
+            "springLength": 250
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
